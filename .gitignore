@@ -40,3 +40,5 @@ next-env.d.ts
 supabase/.branches
 supabase/.temp
 supabase/**/*.env
+
+*storybook.log
