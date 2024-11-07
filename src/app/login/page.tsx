@@ -1,48 +1,61 @@
-'use client';
+"use client"
 
-import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { type FormEventHandler, type MouseEventHandler, useCallback, useState } from 'react'
-import { signIn, signUp } from './actions'
-import { useSearchParams } from 'next/navigation'
-import { ErrorMessage } from '@/components/ui/error-message'
-import { Button } from "@/components/ui/button";
+import Link from "next/link"
+import { Input } from "@/components/ui/input"
+import {
+  type FormEventHandler,
+  type MouseEventHandler,
+  useCallback,
+  useState,
+} from "react"
+import { signIn, signUp } from "./actions"
+import { useSearchParams } from "next/navigation"
+import { ErrorMessage } from "@/components/ui/error-message"
+import { Button } from "@/components/ui/button"
 
 export default function Login() {
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
 
   const [isPending, setIsPending] = useState<boolean>(false)
   const [message, setMessage] = useState<string | null>(null)
-  
+
   const [state, setState] = useState<{
-    message: string | null,
-    email: string,
+    message: string | null
+    email: string
     password: string
   }>({
     message: null,
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   })
 
-  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(async function onSubmit(event) {
-    event.preventDefault();
+  const onSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    async function onSubmit(event) {
+      event.preventDefault()
 
-    setIsPending(true)
-    const formData = new FormData(event.target as HTMLFormElement)
-    const result = await signIn(formData)
-    setMessage(result.message ?? null)
-    setIsPending(false)
-  }, [])
-  
-  const onSignUp: MouseEventHandler<HTMLButtonElement> = useCallback(async function onSignUp(event) {
-    event.preventDefault();
+      setIsPending(true)
+      const formData = new FormData(event.target as HTMLFormElement)
+      const result = await signIn(formData)
+      setMessage(result.message ?? null)
+      setIsPending(false)
+    },
+    [],
+  )
 
-    setIsPending(true)
-    const formData = new FormData((event.target as HTMLButtonElement).closest('form')!)
-    const result = await signUp(formData)
-    setMessage(result.message ?? null)
-    setIsPending(false)
-  }, [])
+  const onSignUp: MouseEventHandler<HTMLButtonElement> = useCallback(
+    async function onSignUp(event) {
+      event.preventDefault()
+
+      setIsPending(true)
+      const formData = new FormData(
+        (event.target as HTMLButtonElement).closest("form")!,
+      )
+      const result = await signUp(formData)
+      setMessage(result.message ?? null)
+      setIsPending(false)
+    },
+    [],
+  )
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
@@ -67,16 +80,19 @@ export default function Login() {
         Back
       </Link>
 
-      <form onSubmit={onSubmit} className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground">
-        <input name="returnUrl" type="hidden" value={searchParams.get('returnUrl') ?? ''} />
+      <form
+        onSubmit={onSubmit}
+        className="animate-in flex-1 flex flex-col w-full justify-center gap-2 text-foreground"
+      >
+        <input
+          name="returnUrl"
+          type="hidden"
+          value={searchParams.get("returnUrl") ?? ""}
+        />
         <label className="text-md" htmlFor="email">
           Email
         </label>
-        <Input
-          name="email"
-          placeholder="you@example.com"
-          required
-        />
+        <Input name="email" placeholder="you@example.com" required />
         <label className="text-md" htmlFor="password">
           Password
         </label>
@@ -87,7 +103,9 @@ export default function Login() {
           required
         />
         <div className="flex flex-col gap-y-4 w-full">
-          {Boolean(state.message) && <ErrorMessage errorMessage={state.message!} />}
+          {Boolean(state.message) && (
+            <ErrorMessage errorMessage={state.message!} />
+          )}
           <div>
             <Button type="submit" aria-disabled={isPending}>
               {isPending ? "Signing In..." : "Sign In"}
@@ -95,9 +113,16 @@ export default function Login() {
           </div>
         </div>
         <div className="flex flex-col gap-y-4 w-full">
-          {Boolean(state.message) && <ErrorMessage errorMessage={state.message!} />}
+          {Boolean(state.message) && (
+            <ErrorMessage errorMessage={state.message!} />
+          )}
           <div>
-            <Button type="submit" aria-disabled={isPending} variant="outline" onClick={onSignUp}>
+            <Button
+              type="submit"
+              aria-disabled={isPending}
+              variant="outline"
+              onClick={onSignUp}
+            >
               {isPending ? "Signing Up..." : "Sign Up"}
             </Button>
           </div>
@@ -109,5 +134,5 @@ export default function Login() {
         )}
       </form>
     </div>
-  );
+  )
 }
