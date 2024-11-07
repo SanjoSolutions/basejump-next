@@ -1,30 +1,42 @@
-'use client'
+"use client"
 
 import { SubmitButton } from "../ui/submit-button"
-import { Label } from "../ui/label";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { updateTeamMemberRole } from "@/lib/actions/members";
-import { GetAccountMembersResponse } from "@usebasejump/shared";
-import { useActionState, useState } from "react";
-import { Checkbox } from "../ui/checkbox";
-import { usePathname } from "next/navigation";
+import { Label } from "../ui/label"
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select"
+import { updateTeamMemberRole } from "@/lib/actions/members"
+import { GetAccountMembersResponse } from "@usebasejump/shared"
+import { useActionState, useState } from "react"
+import { Checkbox } from "../ui/checkbox"
+import { usePathname } from "next/navigation"
 
 type Props = {
-  accountId: string;
-  isPrimaryOwner: boolean;
-  teamMember: GetAccountMembersResponse[0];
+  accountId: string
+  isPrimaryOwner: boolean
+  teamMember: GetAccountMembersResponse[0]
 }
 
 const memberOptions = [
-  { label: 'Owner', value: 'owner' },
-  { label: 'Member', value: 'member' },
+  { label: "Owner", value: "owner" },
+  { label: "Member", value: "member" },
 ]
 
-
-export default function EditTeamMemberRoleForm({ accountId, teamMember, isPrimaryOwner }: Props) {
-  const [, updateTeamMemberRoleAction] = useActionState(updateTeamMemberRole, null)
+export default function EditTeamMemberRoleForm({
+  accountId,
+  teamMember,
+  isPrimaryOwner,
+}: Props) {
+  const [, updateTeamMemberRoleAction] = useActionState(
+    updateTeamMemberRole,
+    null,
+  )
   const [teamRole, setTeamRole] = useState(teamMember.account_role as string)
-  const pathName = usePathname();
+  const pathName = usePathname()
 
   return (
     <form className="animate-in flex-1 flex flex-col w-full justify-center gap-y-6 text-foreground">
@@ -32,9 +44,7 @@ export default function EditTeamMemberRoleForm({ accountId, teamMember, isPrimar
       <input type="hidden" name="userId" value={teamMember.user_id} />
       <input type="hidden" name="returnUrl" value={pathName} />
       <div className="flex flex-col gap-y-2">
-        <Label htmlFor="accountRole">
-          Team Role
-        </Label>
+        <Label htmlFor="accountRole">Team Role</Label>
         <Select value={teamRole} onValueChange={setTeamRole} name="accountRole">
           <SelectTrigger>
             <SelectValue placeholder="Member type" />
@@ -48,7 +58,7 @@ export default function EditTeamMemberRoleForm({ accountId, teamMember, isPrimar
           </SelectContent>
         </Select>
       </div>
-      {teamRole === 'owner' && isPrimaryOwner && (
+      {teamRole === "owner" && isPrimaryOwner && (
         <div className="flex items-center space-x-2">
           <Checkbox id="makePrimaryOwner" name="makePrimaryOwner" />
           <label

@@ -1,8 +1,8 @@
-import { type NextRequest } from "next/server";
-import { validateSession } from "@/lib/supabase/middleware";
+import { type NextRequest } from "next/server"
+import { validateSession } from "@/lib/supabase/middleware"
 
 export async function middleware(request: NextRequest) {
-  return await validateSession(request);
+  return await validateSession(request)
 }
 
 export const config = {
@@ -17,4 +17,4 @@ export const config = {
      */
     "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
-};
+}
